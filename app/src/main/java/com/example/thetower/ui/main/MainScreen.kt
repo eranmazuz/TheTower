@@ -65,22 +65,6 @@ fun MainScreen(
         var selectedTab by remember { mutableIntStateOf(0) }
 
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = when (selectedTab) {
-                                0 -> stringResource(R.string.tab_tower)
-                                1 -> stringResource(R.string.tab_town)
-                                2 -> stringResource(R.string.tab_hero)
-                                3 -> stringResource(R.string.tab_codex)
-                                4 -> stringResource(R.string.tab_settings)
-                                else -> stringResource(R.string.app_name)
-                            }
-                        )
-                    }
-                )
-            },
             bottomBar = {
                 NavigationBar {
                     NavigationBarItem(
