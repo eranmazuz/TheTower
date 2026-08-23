@@ -1,7 +1,6 @@
 package com.example.thetower.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,9 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,16 +36,15 @@ import androidx.compose.ui.unit.sp
 import com.example.thetower.R
 import com.example.thetower.data.config.GameConfig
 import com.example.thetower.data.model.GameState
-import com.example.thetower.theme.SystemBorder
-import com.example.thetower.theme.SystemCyan
-import com.example.thetower.theme.SystemEmerald
-import com.example.thetower.theme.SystemGold
-import com.example.thetower.theme.SystemIndigo
-import com.example.thetower.theme.SystemRuby
-import com.example.thetower.theme.SystemSurface
-import com.example.thetower.theme.SystemSurfaceElevated
-import com.example.thetower.theme.SystemSurfaceHighlight
-import com.example.thetower.theme.SystemTextSecondary
+import com.example.thetower.theme.RpgButtonDark
+import com.example.thetower.theme.RpgCardSurface
+import com.example.thetower.theme.RpgCyan
+import com.example.thetower.theme.RpgEmerald
+import com.example.thetower.theme.RpgGold
+import com.example.thetower.theme.RpgRuby
+import com.example.thetower.theme.RpgSlotSurface
+import com.example.thetower.theme.RpgTextPrimary
+import com.example.thetower.theme.RpgTextSecondary
 
 @Composable
 fun TowerScreen(
@@ -62,84 +58,139 @@ fun TowerScreen(
         GameConfig.ITEMS[it.itemDefId]?.type == "POTION"
     }
 
+    val weaponDef = state.inventory.equippedWeaponId?.let { id ->
+        state.inventory.items.firstOrNull { it.id == id }
+    }?.let { GameConfig.ITEMS[it.itemDefId] }
+
+    val shieldDef = state.inventory.equippedShieldId?.let { id ->
+        state.inventory.items.firstOrNull { it.id == id }
+    }?.let { GameConfig.ITEMS[it.itemDefId] }
+
+    val totalAtk = state.player.baseAttack + (weaponDef?.attackBonus ?: 0)
+    val totalDef = state.player.baseDefense + (shieldDef?.defenseBonus ?: 0)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
     ) {
-        // --- 1. SYSTEM HEADER ---
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        // --- 1. TOP HERO SUMMARY CARD ---
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
         ) {
-            Column {
-                Text(
-                    text = "THE TOWER",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Black,
-                    color = SystemCyan,
-                    letterSpacing = 1.sp
-                )
-                Text(
-                    text = "System Combat Zone",
-                    fontSize = 12.sp,
-                    color = SystemTextSecondary
-                )
-            }
-            Box(
+            Row(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(SystemSurface)
-                    .border(1.dp, SystemGold.copy(alpha = 0.6f), RoundedCornerShape(12.dp))
-                    .padding(horizontal = 14.dp, vertical = 6.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "FLOOR ${state.currentFloor}",
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = SystemGold
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Level ${state.player.level} Hero",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    val xpRatio = if (state.player.xpToNextLevel() > 0) state.player.xp.toFloat() / state.player.xpToNextLevel() else 0f
+                    LinearProgressIndicator(
+                        progress = { xpRatio },
+                        color = RpgEmerald,
+                        trackColor = RpgSlotSurface,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "${state.player.xp}/${state.player.xpToNextLevel()} XP",
+                        fontSize = 11.sp,
+                        color = RpgTextSecondary
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                // Gold Pill
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(RpgSlotSurface)
+                        .padding(horizontal = 14.dp, vertical = 8.dp)
+                ) {
+                    Text(
+                        text = "🪙 ${state.player.gold}g",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = RpgGold
+                    )
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-        // --- 2. ACTIVE MONSTER / BOSS CARD ---
+        // --- 2. BATTLE CARD ---
         if (monster != null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .techBorder()
-                    .padding(16.dp)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    // TOP HALF: ENEMY INFO
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Floor Pill
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(RpgSlotSurface)
+                            .padding(horizontal = 16.dp, vertical = 5.dp)
+                    ) {
+                        Text(
+                            text = "Floor ${state.currentFloor}",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // ENEMY ROW
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = monster.name + if (monster.isBoss) " (BOSS)" else "",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (monster.isBoss) SystemRuby else MaterialTheme.colorScheme.onSurface
-                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = monster.name + if (monster.isBoss) " (BOSS)" else "",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (monster.isBoss) RpgRuby else Color.White
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(monster.avatarEmoji, fontSize = 18.sp)
+                            }
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
                                 text = "Level ${monster.level}",
                                 fontSize = 12.sp,
-                                color = SystemTextSecondary
+                                color = RpgTextSecondary
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             val enemyHpRatio = if (monster.maxHp > 0) monster.currentHp.toFloat() / monster.maxHp else 0f
                             LinearProgressIndicator(
                                 progress = { enemyHpRatio },
-                                color = SystemRuby,
-                                trackColor = Color(0xFF28131E),
+                                color = RpgRuby,
+                                trackColor = RpgSlotSurface,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(14.dp)
@@ -149,61 +200,33 @@ fun TowerScreen(
                             Text(
                                 text = "${monster.currentHp}/${monster.maxHp} HP",
                                 fontSize = 11.sp,
-                                color = SystemTextSecondary
+                                color = RpgTextSecondary
                             )
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Box(
                             modifier = Modifier
-                                .size(68.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(SystemSurfaceElevated)
-                                .border(1.dp, SystemBorder, RoundedCornerShape(16.dp)),
+                                .size(72.dp)
+                                .clip(RoundedCornerShape(18.dp))
+                                .background(RpgSlotSurface),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(monster.avatarEmoji, fontSize = 36.sp)
+                            Text(monster.avatarEmoji, fontSize = 38.sp)
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    // DIVISION LINE
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        HorizontalDivider(
-                            modifier = Modifier.weight(1f),
-                            color = SystemBorder,
-                            thickness = 1.dp
-                        )
-                        Text(
-                            text = " VS ",
-                            color = SystemCyan,
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Black,
-                            modifier = Modifier.padding(horizontal = 8.dp)
-                        )
-                        HorizontalDivider(
-                            modifier = Modifier.weight(1f),
-                            color = SystemBorder,
-                            thickness = 1.dp
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // BOTTOM HALF: PLAYER INFO
+                    // HERO ROW
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(68.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(SystemSurfaceElevated)
-                                .border(1.dp, SystemBorder, RoundedCornerShape(16.dp)),
+                                .size(72.dp)
+                                .clip(RoundedCornerShape(18.dp))
+                                .background(RpgSlotSurface),
                             contentAlignment = Alignment.Center
                         ) {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -225,20 +248,30 @@ fun TowerScreen(
                                 text = state.player.name,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = Color.White
                             )
                             Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = state.player.job,
-                                fontSize = 12.sp,
-                                color = SystemTextSecondary
-                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "⚔️ $totalAtk Attack",
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = RpgGold
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    text = "🛡️ $totalDef Defense",
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = RpgGold
+                                )
+                            }
                             Spacer(modifier = Modifier.height(8.dp))
                             val playerHpRatio = if (state.player.maxHp > 0) state.player.currentHp.toFloat() / state.player.maxHp else 0f
                             LinearProgressIndicator(
                                 progress = { playerHpRatio },
-                                color = SystemRuby,
-                                trackColor = Color(0xFF28131E),
+                                color = RpgRuby,
+                                trackColor = RpgSlotSurface,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(14.dp)
@@ -248,21 +281,22 @@ fun TowerScreen(
                             Text(
                                 text = "${state.player.currentHp}/${state.player.maxHp} HP",
                                 fontSize = 11.sp,
-                                color = SystemTextSecondary
+                                color = RpgTextSecondary
                             )
                         }
                     }
                 }
             }
         } else if (state.floorBossAvailable) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .techBorder(borderColor = SystemGold.copy(alpha = 0.5f), fillColor = SystemSurface)
-                    .padding(20.dp)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text("👹", fontSize = 64.sp)
@@ -271,12 +305,12 @@ fun TowerScreen(
                         text = "Floor Boss Available!",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = SystemGold
+                        color = RpgGold
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = "You have completed all scheduled tasks. Challenge the floor boss to ascend!",
-                        color = SystemTextSecondary,
+                        color = RpgTextSecondary,
                         fontSize = 13.sp,
                         lineHeight = 18.sp
                     )
@@ -284,57 +318,62 @@ fun TowerScreen(
                     Button(
                         onClick = onFightBoss,
                         shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = SystemGold)
+                        colors = ButtonDefaults.buttonColors(containerColor = RpgGold)
                     ) {
                         Text(
                             text = stringResource(R.string.floor_boss_button),
                             fontWeight = FontWeight.Bold,
-                            color = Color.Black
+                            color = Color(0xFF13121D)
                         )
                     }
                 }
             }
         } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .techBorder()
-                    .padding(24.dp),
-                contentAlignment = Alignment.Center
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
             ) {
-                Text(
-                    text = "Tower is peaceful. Waiting for the next monster spawn.",
-                    color = SystemTextSecondary,
-                    fontSize = 13.sp
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Tower is peaceful. Waiting for the next monster spawn.",
+                        color = RpgTextSecondary,
+                        fontSize = 13.sp
+                    )
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // --- 3. ACTION BUTTONS ---
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Button(
                 onClick = onUsePotion,
                 enabled = potionCount > 0,
                 modifier = Modifier
                     .weight(1f)
-                    .height(44.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .height(48.dp),
+                shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = SystemIndigo,
-                    disabledContainerColor = SystemSurfaceHighlight
+                    containerColor = RpgButtonDark,
+                    disabledContainerColor = RpgSlotSurface
                 )
             ) {
                 Text(
                     text = "🧪 " + stringResource(R.string.use_health_potion, potionCount),
-                    fontSize = 11.5.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
-                    color = if (potionCount > 0) Color.White else SystemTextSecondary
+                    color = if (potionCount > 0) RpgCyan else RpgTextSecondary
                 )
             }
 
@@ -342,32 +381,23 @@ fun TowerScreen(
                 onClick = onEscape,
                 modifier = Modifier
                     .weight(1f)
-                    .height(44.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = SystemSurfaceHighlight)
+                    .height(48.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = RpgGold)
             ) {
                 Text(
-                    text = "🏘️ " + stringResource(R.string.escape_town_button),
-                    fontSize = 11.5.sp,
+                    text = "💤 " + stringResource(R.string.escape_town_button),
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = Color(0xFF13121D)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-        // --- 4. COMBAT BATTLE LOG ---
-        Text(
-            text = "SYSTEM COMBAT LOG",
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold,
-            color = SystemCyan,
-            letterSpacing = 1.sp,
-            modifier = Modifier.padding(bottom = 6.dp)
-        )
-
+        // --- 4. BATTLE LOG CARD ---
         val listState = rememberLazyListState()
         LaunchedEffect(state.battleLog.size) {
             if (state.battleLog.isNotEmpty()) {
@@ -375,29 +405,44 @@ fun TowerScreen(
             }
         }
 
-        Box(
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .techBorder()
-                .padding(10.dp)
+                .weight(1f),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
         ) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
             ) {
-                items(state.battleLog) { log ->
-                    Text(
-                        text = log,
-                        fontSize = 12.sp,
-                        color = when {
-                            log.startsWith("⚔️") -> SystemEmerald
-                            log.contains("❌") || log.contains("💧") || log.contains("💀") -> SystemRuby
-                            log.startsWith("✨") || log.startsWith("🏆") -> SystemGold
-                            else -> MaterialTheme.colorScheme.onSurface
-                        },
-                        modifier = Modifier.padding(vertical = 2.dp)
-                    )
+                Text(
+                    text = "Battle Log",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(state.battleLog) { log ->
+                        Text(
+                            text = "• $log",
+                            fontSize = 12.sp,
+                            color = when {
+                                log.startsWith("⚔️") || log.contains("Dealt") -> RpgEmerald
+                                log.contains("❌") || log.contains("💧") || log.contains("💀") -> RpgRuby
+                                log.startsWith("✨") || log.startsWith("🏆") || log.contains("XP") || log.contains("Gold") -> RpgGold
+                                else -> RpgTextPrimary
+                            },
+                            modifier = Modifier.padding(vertical = 2.dp)
+                        )
+                    }
                 }
             }
         }

@@ -5,25 +5,25 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val SystemColorScheme = darkColorScheme(
-    primary = SystemCyan,
-    onPrimary = Color(0xFF0C101D),
-    primaryContainer = SystemSurfaceHighlight,
-    onPrimaryContainer = SystemCyan,
-    secondary = SystemIndigo,
+private val RpgColorScheme = darkColorScheme(
+    primary = RpgGold,
+    onPrimary = Color(0xFF13121D),
+    primaryContainer = RpgSlotSurface,
+    onPrimaryContainer = RpgGold,
+    secondary = RpgCyan,
     onSecondary = Color.White,
-    secondaryContainer = SystemSurfaceHighlight,
-    onSecondaryContainer = SystemTextPrimary,
-    tertiary = SystemGold,
+    secondaryContainer = RpgSlotSurface,
+    onSecondaryContainer = RpgTextPrimary,
+    tertiary = RpgEmerald,
     onTertiary = Color.Black,
-    background = SystemVoid,
-    onBackground = SystemTextPrimary,
-    surface = SystemSurface,
-    onSurface = SystemTextPrimary,
-    surfaceVariant = SystemSurfaceElevated,
-    onSurfaceVariant = SystemTextSecondary,
-    outline = SystemBorder,
-    error = SystemRuby,
+    background = RpgBackground,
+    onBackground = RpgTextPrimary,
+    surface = RpgCardSurface,
+    onSurface = RpgTextPrimary,
+    surfaceVariant = RpgSlotSurface,
+    onSurfaceVariant = RpgTextSecondary,
+    outline = RpgBorder,
+    error = RpgRuby,
     onError = Color.White
 )
 
@@ -34,7 +34,7 @@ fun TheTowerTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
-        colorScheme = SystemColorScheme,
+        colorScheme = RpgColorScheme,
         typography = Typography,
         content = content
     )

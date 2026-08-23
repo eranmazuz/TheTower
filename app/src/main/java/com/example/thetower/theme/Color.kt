@@ -2,21 +2,19 @@ package com.example.thetower.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Background & Surfaces (Deep obsidian-indigo manhwa system aesthetic)
-val SystemVoid = Color(0xFF0C101D) // Deep obsidian-navy canvas
-val SystemSurface = Color(0xFF151C2F) // Card & panel surface
-val SystemSurfaceElevated = Color(0xFF101524) // Recessed box / slot container
-val SystemSurfaceHighlight = Color(0xFF1E2842) // Highlighted interactive item
+// Original RPG Dark Palette
+val RpgBackground = Color(0xFF13121D) // Deep obsidian dark canvas
+val RpgCardSurface = Color(0xFF1F1D2B) // Card & panel surface
+val RpgSlotSurface = Color(0xFF2B283A) // Recessed avatar / pill container
+val RpgButtonDark = Color(0xFF2C2B42) // Dark action button surface
 
-// System Glow & Accents
-val SystemCyan = Color(0xFF38BDF8) // Primary system notification cyan-blue
-val SystemIndigo = Color(0xFF6366F1) // Secondary arcane indigo
-val SystemGold = Color(0xFFFBBF24) // Floor, gold, and reward amber-gold
-val SystemRuby = Color(0xFFF43F5E) // Health bar crimson ruby
-val SystemEmerald = Color(0xFF10B981) // Positive / buff emerald
-val SystemBorder = Color(0xFF2D3A58) // Elegant dark slate border
+// Accents
+val RpgGold = Color(0xFFFEB95A) // Warm gold for gold pill, rest button & stat highlights
+val RpgCyan = Color(0xFF38BDF8) // Potion / system notification cyan
+val RpgRuby = Color(0xFFEF4444) // HP Bar coral-red
+val RpgEmerald = Color(0xFF4ADE80) // XP Bar mint-green & hit highlights
+val RpgBorder = Color(0xFF2B283A) // Clean subtle border
 
-// Typography
-val SystemTextPrimary = Color(0xFFF1F5F9) // High-contrast crisp white
-val SystemTextSecondary = Color(0xFF94A3B8) // Cool slate subtext
-val SystemTextMuted = Color(0xFF64748B) // Darker hint subtext
+// Text
+val RpgTextPrimary = Color(0xFFF8FAFC) // Crisp white
+val RpgTextSecondary = Color(0xFF9CA3AF) // Muted subtext
