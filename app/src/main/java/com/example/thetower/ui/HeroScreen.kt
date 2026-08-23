@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.thetower.R
+import com.example.thetower.ui.techBorder
 import com.example.thetower.data.config.GameConfig
 import com.example.thetower.data.model.GameState
 import com.example.thetower.data.model.ItemInstance
@@ -74,45 +75,113 @@ fun HeroScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Hero Avatar & Level Section
+        // Solo Leveling STATUS Screen Panel
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .techBorder()
+                    .padding(20.dp)
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(if (state.player.job == "Mage") "🧙" else "⚔️", fontSize = 64.sp)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(state.player.name, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    // Header: STATUS
                     Text(
-                        stringResource(R.string.job_label, state.player.job),
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = "STATUS",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        letterSpacing = 2.sp
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Ornament Separator
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Divider(
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                            thickness = 2.dp
+                        )
+                        Text(" ◆ ", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Divider(
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                            thickness = 2.dp
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // XP Bar
-                    val xpRatio = if (state.player.xpToNextLevel() > 0) state.player.xp.toFloat() / state.player.xpToNextLevel() else 0f
+                    // Grid of Info
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("NAME: ${state.player.name.uppercase()}", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("JOB: ${state.player.job.uppercase()}", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            val weaponText = if (weaponDef != null) "${state.player.baseAttack} (+${weaponDef.attackBonus})" else "${state.player.baseAttack}"
+                            Text("ATK: $weaponText", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("LEVEL: ${state.player.level}", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            val shieldText = if (shieldDef != null) "${state.player.baseDefense} (+${shieldDef.defenseBonus})" else "${state.player.baseDefense}"
+                            Text("DEF: $shieldText", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("GOLD: ${state.player.gold}", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // HP & XP bars
+                    val hpRatio = if (state.player.maxHp > 0) state.player.currentHp.toFloat() / state.player.maxHp else 0f
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("XP", fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("HP: ", fontWeight = FontWeight.Bold, fontSize = 12.sp, modifier = Modifier.width(40.dp))
                         LinearProgressIndicator(
-                            progress = { xpRatio },
-                            color = Color(0xFFFFCA28),
-                            trackColor = Color(0xFFFFF9C4),
+                            progress = { hpRatio },
+                            color = Color(0xFF00E5FF),
+                            trackColor = Color(0x3300E5FF),
                             modifier = Modifier
                                 .weight(1f)
-                                .height(10.dp)
-                                .clip(RoundedCornerShape(5.dp))
+                                .height(8.dp)
+                                .clip(RoundedCornerShape(4.dp))
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "${state.player.currentHp}/${state.player.maxHp}",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    val xpRatio = if (state.player.xpToNextLevel() > 0) state.player.xp.toFloat() / state.player.xpToNextLevel() else 0f
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("XP: ", fontWeight = FontWeight.Bold, fontSize = 12.sp, modifier = Modifier.width(40.dp))
+                        LinearProgressIndicator(
+                            progress = { xpRatio },
+                            color = Color(0xFF2979FF),
+                            trackColor = Color(0x332979FF),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(8.dp)
+                                .clip(RoundedCornerShape(4.dp))
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -122,85 +191,47 @@ fun HeroScreen(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    // HP Bar
-                    val hpRatio = if (state.player.maxHp > 0) state.player.currentHp.toFloat() / state.player.maxHp else 0f
+                    // Separator 2
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("HP", fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        LinearProgressIndicator(
-                            progress = { hpRatio },
-                            color = Color(0xFF66BB6A),
-                            trackColor = Color(0xFFC8E6C9),
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(10.dp)
-                                .clip(RoundedCornerShape(5.dp))
+                        Divider(
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                            thickness = 2.dp
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "${state.player.currentHp}/${state.player.maxHp}",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
+                        Text(" ◆ ", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Divider(
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                            thickness = 2.dp
                         )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Core Stats (attributes distribution)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("STRENGTH: $totalAtk", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("DEFENSE: $totalDef", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        }
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("VITALITY: ${state.player.maxHp}", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            val speedAttr = if (state.player.job == "Mage") 15 else 10
+                            Text("AGILITY: $speedAttr", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        }
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        // Combat Stats Card
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Level", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
-                        Text("${state.player.level}", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Attack", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
-                        Text(
-                            text = "$totalAtk",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = Color(0xFFC62828)
-                        )
-                        if (weaponDef != null) {
-                            Text("(${state.player.baseAttack} + ${weaponDef.attackBonus})", fontSize = 10.sp, color = Color.Gray)
-                        }
-                    }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Defense", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
-                        Text(
-                            text = "$totalDef",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = Color(0xFF1565C0)
-                        )
-                        if (shieldDef != null) {
-                            Text("(${state.player.baseDefense} + ${shieldDef.defenseBonus})", fontSize = 10.sp, color = Color.Gray)
-                        }
-                    }
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Gold", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
-                        Text("${state.player.gold}g", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFFF57F17))
-                    }
-                }
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
         }
 
