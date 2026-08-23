@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">The Tower</string>
+    <string name="tab_tower">Tower</string>
+    <string name="tab_town">Town</string>
+    <string name="tab_hero">Hero</string>
+    <string name="tab_codex">Codex</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="merchant_title">Guild Merchant</string>
+    <string name="quest_registry_title">Quest Registry</string>
+    <string name="buy_tab">Buy</string>
+    <string name="sell_tab">Sell</string>
+    <string name="buy_button">Buy</string>
+    <string name="sell_button">Sell</string>
+    <string name="equip_button">Equip</string>
+    <string name="unequip_button">Unequip</string>
+    <string name="use_button">Use</string>
+
+    <string name="gold_label">Gold: %1$d</string>
+    <string name="xp_label">XP: %1$d / %2$d</string>
+    <string name="level_label">Level %1$d</string>
+    <string name="hp_label">HP: %1$d / %2$d</string>
+    <string name="atk_label">ATK: %1$d</string>
+    <string name="def_label">DEF: %1$d</string>
+    <string name="job_label">Job: %1$s</string>
+
+    <string name="choose_job_title">Choose Your Job</string>
+    <string name="choose_job_desc">Your job determines your starting attributes and combat profile.</string>
+    <string name="job_warrior">Warrior</string>
+    <string name="job_mage">Mage</string>
+    <string name="start_journey">Start Journey</string>
+
+    <string name="water_tracker_title">Daily Hydration</string>
+    <string name="water_target_label">Daily Target: %1$.1fL</string>
+    <string name="water_progress_label">Consumed: %1$.2fL / %2$.1fL</string>
+    <string name="add_250_ml">+250ml</string>
+    <string name="add_500_ml">+500ml</string>
+
+    <string name="temptation_button">Log Temptation</string>
+    <string name="temptation_dialog_title">Record a Temptation</string>
+    <string name="temptation_dialog_desc">Logging a temptation (bad habit) will cause the monster to immediately retaliate and deal damage to your hero.</string>
+    <string name="temptation_confirm">Log Temptation (+Damage)</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+
+    <string name="quest_title_label">Quest Title</string>
+    <string name="quest_slot_label">Target Time Slot</string>
+    <string name="quest_days_label">Active Days</string>
+    <string name="add_quest_button">Add Quest</string>
+    <string name="empty_quests_msg">No quests configured. Add habits in the Quest Registry!</string>
+
+    <string name="floor_boss_button">Fight Floor Boss!</string>
+    <string name="use_health_potion">Use Health Potion (%1$d left)</string>
+    <string name="escape_town_button">Go Back to Town</string>
+
+    <string name="codex_title">Bestiary Codex</string>
+    <string name="codex_encounters">Encounters: %1$d</string>
+    <string name="codex_defeats">Defeats: %1$d</string>
+    <string name="codex_win_rate">Win Rate: %1$.1f%%</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_lang">Language</string>
+    <string name="settings_lang_en">English</string>
+    <string name="settings_lang_he">עברית (Hebrew)</string>
+    <string name="settings_alarm_title">Reminder Time Slots</string>
+    <string name="settings_alarm_mode">Alarm Mode (Loop ringtone &amp; vibration)</string>
+    <string name="settings_notif_mode">Standard Notification Mode</string>
+    <string name="upload_ringtone">Upload Custom Ringtone (MP3)</string>
+    <string name="custom_ringtone_active">Custom ringtone: %1$s</string>
+    <string name="no_custom_ringtone">Using game theme default ringtone</string>
+    <string name="invalid_file_msg">Invalid MP3 file. Size must be under 5MB.</string>
+    <string name="exact_alarm_perm_warning">Exact alarm permission is required to schedule precise slot notifications. Click here to enable it.</string>
+    <string name="notif_perm_warning">Notification permission is required to remind you of slot transitions. Click here to enable it.</string>
+</resources>

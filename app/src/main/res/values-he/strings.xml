@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">המגדל</string>
+    <string name="tab_tower">מגדל</string>
+    <string name="tab_town">עיירה</string>
+    <string name="tab_hero">גיבור</string>
+    <string name="tab_codex">קודקס</string>
+    <string name="tab_settings">הגדרות</string>
+
+    <string name="merchant_title">סוחר הגילדה</string>
+    <string name="quest_registry_title">רישום משימות</string>
+    <string name="buy_tab">קנייה</string>
+    <string name="sell_tab">מכירה</string>
+    <string name="buy_button">קנה</string>
+    <string name="sell_button">מכור</string>
+    <string name="equip_button">הצטייד</string>
+    <string name="unequip_button">הסר</string>
+    <string name="use_button">השתמש</string>
+
+    <string name="gold_label">זהב: %1$d</string>
+    <string name="xp_label">נקודות ניסיון: %1$d / %2$d</string>
+    <string name="level_label">דרגה %1$d</string>
+    <string name="hp_label">חיים: %1$d / %2$d</string>
+    <string name="atk_label">התקפה: %1$d</string>
+    <string name="def_label">הגנה: %1$d</string>
+    <string name="job_label">מקצוע: %1$s</string>
+
+    <string name="choose_job_title">בחר את המקצוע שלך</string>
+    <string name="choose_job_desc">המקצוע שלך קובע את תכונות הבסיס ופרופיל הקרב שלך.</string>
+    <string name="job_warrior">לוחם</string>
+    <string name="job_mage">קוסם</string>
+    <string name="start_journey">התחל במסע</string>
+
+    <string name="water_tracker_title">מעקב שתייה יומי</string>
+    <string name="water_target_label">יעד יומי: %1$.1f ליטר</string>
+    <string name="water_progress_label">נצרך: %1$.2f ליטר / %2$.1f ליטר</string>
+    <string name="add_250_ml">+250 מ״ל</string>
+    <string name="add_500_ml">+500 מ״ל</string>
+
+    <string name="temptation_button">דווח פיתוי</string>
+    <string name="temptation_dialog_title">תעד פיתוי (הרגל רע)</string>
+    <string name="temptation_dialog_desc">תיעוד פיתוי (הרגל רע) יגרום למפלצת להגיב מיידית ולפגוע בגיבור שלך.</string>
+    <string name="temptation_confirm">דווח פיתוי (+נזק)</string>
+    <string name="cancel">ביטול</string>
+    <string name="save">שמירה</string>
+    <string name="delete">מחיקה</string>
+
+    <string name="quest_title_label">שם המשימה</string>
+    <string name="quest_slot_label">חלון זמן מיועד</string>
+    <string name="quest_days_label">ימים פעילים</string>
+    <string name="add_quest_button">הוסף משימה</string>
+    <string name="empty_quests_msg">לא הוגדרו משימות. הוסף הרגלים ברישום המשימות שבעיירה!</string>
+
+    <string name="floor_boss_button">להילחם בבוס הקומה!</string>
+    <string name="use_health_potion">השתמש בשיקוי בריאות (%1$d נשארו)</string>
+    <string name="escape_town_button">חזור לעיירה</string>
+
+    <string name="codex_title">קודקס מפלצות</string>
+    <string name="codex_encounters">מפגשים: %1$d</string>
+    <string name="codex_defeats">ניצחונות: %1$d</string>
+    <string name="codex_win_rate">אחוז ניצחונות: %1$.1f%%</string>
+
+    <string name="settings_title">הגדרות</string>
+    <string name="settings_lang">שפה</string>
+    <string name="settings_lang_en">English</string>
+    <string name="settings_lang_he">עברית (Hebrew)</string>
+    <string name="settings_alarm_title">חלונות זמן לתזכורות</string>
+    <string name="settings_alarm_mode">מצב שעון מעורר (לולאת צלצול ורטט)</string>
+    <string name="settings_notif_mode">מצב התראות רגיל</string>
+    <string name="upload_ringtone">העלה צלצול מותאם אישית (MP3)</string>
+    <string name="custom_ringtone_active">צלצול פעיל: %1$s</string>
+    <string name="no_custom_ringtone">צלצול ברירת מחדל פעיל</string>
+    <string name="invalid_file_msg">קובץ MP3 לא תקין. הגודל חייב להיות מתחת ל-5MB.</string>
+    <string name="exact_alarm_perm_warning">נדרשת הרשאת שעון מעורר מדויק לתזמון התראות. לחץ כאן כדי לאשר.</string>
+    <string name="notif_perm_warning">נדרשת הרשאת התראות כדי להזכיר לך מעברי חלונות זמן. לחץ כאן כדי לאשר.</string>
+</resources>
