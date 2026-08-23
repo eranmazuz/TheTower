@@ -15,33 +15,23 @@ fun Modifier.techBorder(
     val w = size.width
     val h = size.height
 
-    // 1. Draw semi-transparent background fill
+    // 1. Draw background
+    drawRect(color = fillColor)
+
+    // 2. Thick Outer Border
     drawRect(
-        color = fillColor
+        color = color,
+        style = Stroke(width = strokeWidth)
     )
 
-    // 2. Draw thin full outline
+    // 3. Thin Inner Border with a small gap (classic retro RPG bubble style)
+    val gap = 8f
     drawRect(
-        color = color.copy(alpha = 0.25f),
+        color = color.copy(alpha = 0.6f),
+        topLeft = Offset(gap, gap),
+        size = androidx.compose.ui.geometry.Size(w - gap * 2, h - gap * 2),
         style = Stroke(width = strokeWidth / 2)
     )
-
-    // 3. Draw thick corner brackets
-    // Top-Left Corner
-    drawLine(color, Offset(0f, 0f), Offset(cornerLength, 0f), strokeWidth)
-    drawLine(color, Offset(0f, 0f), Offset(0f, cornerLength), strokeWidth)
-
-    // Top-Right Corner
-    drawLine(color, Offset(w, 0f), Offset(w - cornerLength, 0f), strokeWidth)
-    drawLine(color, Offset(w, 0f), Offset(w, cornerLength), strokeWidth)
-
-    // Bottom-Left Corner
-    drawLine(color, Offset(0f, h), Offset(cornerLength, h), strokeWidth)
-    drawLine(color, Offset(0f, h), Offset(0f, h - cornerLength), strokeWidth)
-
-    // Bottom-Right Corner
-    drawLine(color, Offset(w, h), Offset(w - cornerLength, h), strokeWidth)
-    drawLine(color, Offset(w, h), Offset(w, h - cornerLength), strokeWidth)
 }
 
 fun Modifier.techCircle(
