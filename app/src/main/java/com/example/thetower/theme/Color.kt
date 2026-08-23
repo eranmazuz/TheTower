@@ -2,10 +2,11 @@ package com.example.thetower.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val RetroBlack = Color(0xFF0A0A0C)
+val RetroDarkGrey = Color(0xFF16161A)
+val RetroCardGrey = Color(0xFF22222A)
+val RetroAmber = Color(0xFFFFB300)
+val RetroGreen = Color(0xFF00E676)
+val RetroRed = Color(0xFFFF1744)
+val RetroLightGrey = Color(0xFFECEFF1)
+val RetroMutedGrey = Color(0xFF90A4AE)
