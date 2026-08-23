@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -129,12 +131,11 @@ fun JobSelectionScreen(
                 "HP: 40  |  ATK: 18  |  DEF: 3"
             }
 
-            Card(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.4f))
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .techBorder()
             ) {
                 Column(
                     modifier = Modifier
@@ -142,8 +143,15 @@ fun JobSelectionScreen(
                         .padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(avatar, fontSize = 64.sp)
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .size(96.dp)
+                            .techCircle(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(avatar, fontSize = 48.sp)
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
                     Text(title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
