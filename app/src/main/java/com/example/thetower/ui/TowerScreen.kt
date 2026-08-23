@@ -199,6 +199,7 @@ fun TowerScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Hero Avatar Frame with Corner Class Crest
                         Box(
                             modifier = Modifier
                                 .size(72.dp)
@@ -206,20 +207,27 @@ fun TowerScreen(
                                 .background(RpgSlotSurface),
                             contentAlignment = Alignment.Center
                         ) {
-                            Box(modifier = Modifier.fillMaxSize()) {
+                            // Centered Hero Portrait
+                            Text(
+                                text = "🧑",
+                                fontSize = 40.sp,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+
+                            // Class Crest Badge in Corner
+                            Box(
+                                modifier = Modifier
+                                    .size(26.dp)
+                                    .align(Alignment.BottomEnd)
+                                    .offset(x = (-3).dp, y = (-3).dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(RpgButtonDark)
+                                    .border(1.dp, RpgGold.copy(alpha = 0.8f), RoundedCornerShape(8.dp)),
+                                contentAlignment = Alignment.Center
+                            ) {
                                 Text(
                                     text = if (state.player.job == "Mage") "🪄" else "⚔️",
-                                    fontSize = 20.sp,
-                                    modifier = Modifier
-                                        .align(Alignment.TopCenter)
-                                        .padding(top = 6.dp)
-                                )
-                                Text(
-                                    text = "🧑",
-                                    fontSize = 34.sp,
-                                    modifier = Modifier
-                                        .align(Alignment.BottomCenter)
-                                        .padding(bottom = 6.dp)
+                                    fontSize = 14.sp
                                 )
                             }
                         }
