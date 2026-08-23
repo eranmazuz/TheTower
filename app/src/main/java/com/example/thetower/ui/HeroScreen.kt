@@ -151,8 +151,8 @@ fun HeroScreen(
                         Text("HP: ", fontWeight = FontWeight.Bold, fontSize = 12.sp, modifier = Modifier.width(40.dp))
                         LinearProgressIndicator(
                             progress = { hpRatio },
-                            color = Color(0xFFF43F5E), // Red HP bar
-                            trackColor = Color(0x33F43F5E),
+                            color = Color(0xFFEF4444),
+                            trackColor = Color(0x33EF4444),
                             modifier = Modifier
                                 .weight(1f)
                                 .height(8.dp)
@@ -176,8 +176,8 @@ fun HeroScreen(
                         Text("XP: ", fontWeight = FontWeight.Bold, fontSize = 12.sp, modifier = Modifier.width(40.dp))
                         LinearProgressIndicator(
                             progress = { xpRatio },
-                            color = Color(0xFFFFCA28), // Yellow XP bar
-                            trackColor = Color(0x33FFCA28),
+                            color = Color(0xFFF59E0B),
+                            trackColor = Color(0x33F59E0B),
                             modifier = Modifier
                                 .weight(1f)
                                 .height(8.dp)
