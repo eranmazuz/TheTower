@@ -422,31 +422,29 @@ fun TowerScreen(
                 ) {
                     items(state.battleLog.asReversed()) { log ->
                         val isWaterOrPotion = log.contains("water", ignoreCase = true) ||
-                                log.contains("Consumed", ignoreCase = true) ||
+                                log.contains("💧") ||
                                 log.contains("potion", ignoreCase = true) ||
-                                log.contains("Healed", ignoreCase = true)
+                                log.contains("🧪") ||
+                                log.contains("Restored", ignoreCase = true)
 
-                        val isDamage = !isWaterOrPotion && (
-                                log.contains("damage", ignoreCase = true) ||
-                                log.contains("failed", ignoreCase = true) ||
+                        val isDamageToPlayer = log.contains("Temptation", ignoreCase = true) ||
                                 log.contains("retaliat", ignoreCase = true) ||
-                                log.contains("Took", ignoreCase = true) ||
-                                log.contains("❌") || log.contains("💀")
-                        )
+                                log.contains("failed", ignoreCase = true) ||
+                                log.contains("to you", ignoreCase = true) ||
+                                log.contains("to your hero", ignoreCase = true) ||
+                                log.contains("to ${state.player.name}", ignoreCase = true) ||
+                                log.contains("❌") || log.contains("💀") || log.contains("⚠️")
 
-                        val isAttack = log.contains("attack", ignoreCase = true) ||
-                                log.contains("Dealt", ignoreCase = true) ||
-                                log.contains("Hit", ignoreCase = true) ||
-                                log.contains("completed", ignoreCase = true) ||
+                        val isTriumph = log.contains("LEVEL UP", ignoreCase = true) ||
                                 log.contains("Defeated", ignoreCase = true) ||
-                                log.startsWith("⚔️") || log.startsWith("✨") || log.startsWith("🏆") ||
-                                log.contains("XP") || log.contains("Gold")
+                                log.contains("Found loot", ignoreCase = true) ||
+                                log.contains("🏆") || log.contains("🎁") || log.contains("✨")
 
                         val itemColor = when {
+                            isDamageToPlayer -> RpgRuby // Red only for taking damage / failure / temptation
                             isWaterOrPotion -> RpgCyan // Cyan for water and healing
-                            isDamage -> RpgRuby // Red for taking damage / failure
-                            isAttack -> RpgGold // Yellow for attacking / rewards
-                            else -> RpgTextPrimary
+                            isTriumph -> RpgGold // Gold for rewards, level-up and defeating monsters
+                            else -> RpgTextPrimary // Regular color for player attacks and system messages
                         }
 
                         Text(
