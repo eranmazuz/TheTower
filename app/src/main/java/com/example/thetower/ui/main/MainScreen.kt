@@ -28,6 +28,7 @@ import com.example.thetower.ui.CodexScreen
 import com.example.thetower.ui.HeroScreen
 import com.example.thetower.ui.JobSelectionScreen
 import com.example.thetower.ui.LanguageWrapper
+import com.example.thetower.ui.QuestsScreen
 import com.example.thetower.ui.SettingsScreen
 import com.example.thetower.ui.TowerScreen
 import com.example.thetower.ui.TownScreen
@@ -76,14 +77,14 @@ fun MainScreen(
                     NavigationBarItem(
                         selected = selectedTab == 1,
                         onClick = { selectedTab = 1 },
-                        icon = { Text("🏘️", fontSize = 20.sp) },
-                        label = { Text(stringResource(R.string.tab_town)) }
+                        icon = { Text("📜", fontSize = 20.sp) },
+                        label = { Text(stringResource(R.string.tab_quests)) }
                     )
                     NavigationBarItem(
                         selected = selectedTab == 2,
                         onClick = { selectedTab = 2 },
-                        icon = { Text("👤", fontSize = 20.sp) },
-                        label = { Text(stringResource(R.string.tab_hero)) }
+                        icon = { Text("🏘️", fontSize = 20.sp) },
+                        label = { Text(stringResource(R.string.tab_town)) }
                     )
                     NavigationBarItem(
                         selected = selectedTab == 3,
@@ -94,6 +95,12 @@ fun MainScreen(
                     NavigationBarItem(
                         selected = selectedTab == 4,
                         onClick = { selectedTab = 4 },
+                        icon = { Text("👤", fontSize = 20.sp) },
+                        label = { Text(stringResource(R.string.tab_hero)) }
+                    )
+                    NavigationBarItem(
+                        selected = selectedTab == 5,
+                        onClick = { selectedTab = 5 },
                         icon = { Text("⚙️", fontSize = 20.sp) },
                         label = { Text(stringResource(R.string.tab_settings)) }
                     )
@@ -112,14 +119,20 @@ fun MainScreen(
                         onEscape = { mainViewModel.escapeTown() },
                         onFightBoss = { mainViewModel.fightFloorBoss() }
                     )
-                    1 -> TownScreen(
+                    1 -> QuestsScreen(
+                        state = state,
+                        onCompleteQuest = { questId -> mainViewModel.completeQuest(questId) },
+                        onNavigateToTown = { selectedTab = 2 }
+                    )
+                    2 -> TownScreen(
                         state = state,
                         onBuyItem = { itemId -> mainViewModel.buyItem(itemId) },
                         onSellItem = { instanceId -> mainViewModel.sellItem(instanceId) },
                         onAddQuest = { title, slot, days -> mainViewModel.addQuest(title, slot, days) },
                         onDeleteQuest = { questId -> mainViewModel.deleteQuest(questId) }
                     )
-                    2 -> HeroScreen(
+                    3 -> CodexScreen(state = state)
+                    4 -> HeroScreen(
                         state = state,
                         onAddWater = { amount -> mainViewModel.addWater(amount) },
                         onLogTemptation = { mainViewModel.logTemptation() },
@@ -127,8 +140,7 @@ fun MainScreen(
                         onUnequip = { instanceId -> mainViewModel.unequipItem(instanceId) },
                         onUsePotion = { mainViewModel.useHealthPotion() }
                     )
-                    3 -> CodexScreen(state = state)
-                    4 -> SettingsScreen(
+                    5 -> SettingsScreen(
                         state = state,
                         onLanguageChange = { lang -> mainViewModel.updateLanguage(lang) },
                         onAlarmTimesChange = { times ->

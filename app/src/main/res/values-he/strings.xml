@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">המגדל</string>
     <string name="tab_tower">מגדל</string>
+    <string name="tab_quests">משימות</string>
     <string name="tab_town">עיירה</string>
     <string name="tab_hero">גיבור</string>
     <string name="tab_codex">קודקס</string>
