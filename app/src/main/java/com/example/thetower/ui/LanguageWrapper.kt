@@ -1,6 +1,8 @@
 package com.example.thetower.ui
 
 import android.content.res.Configuration
+import androidx.activity.compose.LocalActivityResultRegistryOwner
+import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalConfiguration
@@ -18,6 +20,7 @@ fun LanguageWrapper(
 
     val currentConfig = LocalConfiguration.current
     val currentContext = LocalContext.current
+    val registryOwner = LocalActivityResultRegistryOwner.current ?: (currentContext as? ActivityResultRegistryOwner)
 
     // In Android, Hebrew is mapped to either "iw" or "he". We use "he".
     val locale = Locale(if (language == "he") "he" else "en")
@@ -31,10 +34,20 @@ fun LanguageWrapper(
 
     val localizedContext = currentContext.createConfigurationContext(localizedConfig)
 
-    CompositionLocalProvider(
-        LocalContext provides localizedContext,
-        LocalLayoutDirection provides layoutDirection
-    ) {
-        content()
+    if (registryOwner != null) {
+        CompositionLocalProvider(
+            LocalContext provides localizedContext,
+            LocalLayoutDirection provides layoutDirection,
+            LocalActivityResultRegistryOwner provides registryOwner
+        ) {
+            content()
+        }
+    } else {
+        CompositionLocalProvider(
+            LocalContext provides localizedContext,
+            LocalLayoutDirection provides layoutDirection
+        ) {
+            content()
+        }
     }
 }
