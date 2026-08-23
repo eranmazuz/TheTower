@@ -43,6 +43,7 @@ import com.example.thetower.theme.RpgBorder
 import com.example.thetower.theme.RpgButtonDark
 import com.example.thetower.theme.RpgCardSurface
 import com.example.thetower.theme.RpgCyan
+import com.example.thetower.theme.RpgEmerald
 import com.example.thetower.theme.RpgGold
 import com.example.thetower.theme.RpgRuby
 import com.example.thetower.theme.RpgSlotSurface
@@ -421,11 +422,11 @@ fun TowerScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(state.battleLog.asReversed()) { log ->
-                        val isWaterOrPotion = log.contains("water", ignoreCase = true) ||
-                                log.contains("💧") ||
-                                log.contains("potion", ignoreCase = true) ||
+                        val isWater = log.contains("water", ignoreCase = true) || log.contains("💧")
+                        val isPotionOrHeal = log.contains("potion", ignoreCase = true) ||
                                 log.contains("🧪") ||
-                                log.contains("Restored", ignoreCase = true)
+                                log.contains("Restored", ignoreCase = true) ||
+                                log.contains("Healed", ignoreCase = true)
 
                         val isDamageToPlayer = log.contains("Temptation", ignoreCase = true) ||
                                 log.contains("retaliat", ignoreCase = true) ||
@@ -441,8 +442,9 @@ fun TowerScreen(
                                 log.contains("🏆") || log.contains("🎁") || log.contains("✨")
 
                         val itemColor = when {
-                            isDamageToPlayer -> RpgRuby // Red only for taking damage / failure / temptation
-                            isWaterOrPotion -> RpgCyan // Cyan for water and healing
+                            isDamageToPlayer -> RpgRuby // Red for taking damage / failure / temptation
+                            isWater -> RpgCyan // Blue/Cyan for water hydration
+                            isPotionOrHeal -> RpgEmerald // Emerald green for health recovery & potions
                             isTriumph -> RpgGold // Gold for rewards, level-up and defeating monsters
                             else -> RpgTextPrimary // Regular color for player attacks and system messages
                         }
