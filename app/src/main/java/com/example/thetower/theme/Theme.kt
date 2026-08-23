@@ -1,13 +1,13 @@
 package com.example.thetower.theme
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val RetroColorScheme = lightColorScheme(
+private val RetroColorScheme = darkColorScheme(
     primary = RetroAmber,
-    onPrimary = Color.White,
+    onPrimary = Color.Black,
     secondary = RetroGreen,
     onSecondary = Color.White,
     tertiary = RetroRed,
@@ -19,12 +19,12 @@ private val RetroColorScheme = lightColorScheme(
     onSurfaceVariant = RetroMutedGrey,
     outline = RetroAmber,
     error = RetroRed,
-    onError = Color.White
+    onError = Color.Black
 )
 
 @Composable
 fun TheTowerTheme(
-    darkTheme: Boolean = false, // Use bright light theme
+    darkTheme: Boolean = true,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
