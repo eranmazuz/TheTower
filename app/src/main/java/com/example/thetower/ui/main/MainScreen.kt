@@ -149,7 +149,8 @@ fun MainScreen(
                         },
                         onAlarmModeToggle = { active -> mainViewModel.toggleAlarmMode(active) },
                         onHydrationTargetChange = { target -> mainViewModel.setHydrationTarget(target) },
-                        onRingtoneUploaded = { mainViewModel.saveCustomRingtonePath() }
+                        onRingtoneUploaded = { mainViewModel.saveCustomRingtonePath() },
+                        onResetProgress = { mainViewModel.resetProgress() }
                     )
                 }
             }

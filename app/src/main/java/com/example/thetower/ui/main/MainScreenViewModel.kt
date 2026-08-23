@@ -528,4 +528,10 @@ class MainScreenViewModel(private val repository: DataRepository) : ViewModel() 
             )
         }
     }
+
+    fun resetProgress() {
+        repository.updateState {
+            GameState()
+        }
+    }
 }

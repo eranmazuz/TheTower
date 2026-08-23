@@ -11,7 +11,10 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,19 +22,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -53,6 +60,16 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.example.thetower.R
 import com.example.thetower.data.model.GameState
+import com.example.thetower.theme.RpgBorder
+import com.example.thetower.theme.RpgButtonDark
+import com.example.thetower.theme.RpgCardSurface
+import com.example.thetower.theme.RpgCyan
+import com.example.thetower.theme.RpgEmerald
+import com.example.thetower.theme.RpgGold
+import com.example.thetower.theme.RpgRuby
+import com.example.thetower.theme.RpgSlotSurface
+import com.example.thetower.theme.RpgTextPrimary
+import com.example.thetower.theme.RpgTextSecondary
 import java.io.File
 import java.time.LocalTime
 
@@ -63,7 +80,8 @@ fun SettingsScreen(
     onAlarmTimesChange: (Map<String, String>) -> Unit,
     onAlarmModeToggle: (Boolean) -> Unit,
     onHydrationTargetChange: (Double) -> Unit,
-    onRingtoneUploaded: () -> Unit
+    onRingtoneUploaded: () -> Unit,
+    onResetProgress: () -> Unit
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -75,7 +93,6 @@ fun SettingsScreen(
     var nightTime by remember { mutableStateOf(state.alarmTimes["NIGHT"] ?: "21:00") }
     var isTimeValid by remember { mutableStateOf(true) }
 
-    // Validate times on typing
     LaunchedEffect(morningTime, noonTime, eveningTime, nightTime) {
         isTimeValid = isValidTime(morningTime) && isValidTime(noonTime) &&
                 isValidTime(eveningTime) && isValidTime(nightTime)
@@ -120,25 +137,105 @@ fun SettingsScreen(
         }
     }
 
+    // Reset Confirmation Dialog State
+    var showResetDialog by remember { mutableStateOf(false) }
+
+    if (showResetDialog) {
+        AlertDialog(
+            onDismissRequest = { showResetDialog = false },
+            title = {
+                Text(
+                    text = stringResource(R.string.settings_reset_confirm_title),
+                    fontWeight = FontWeight.Bold,
+                    color = RpgRuby
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(R.string.settings_reset_confirm_desc),
+                    color = RpgTextSecondary,
+                    fontSize = 14.sp
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showResetDialog = false
+                        onResetProgress()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = RpgRuby)
+                ) {
+                    Text(
+                        stringResource(R.string.settings_reset_confirm_button),
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showResetDialog = false }) {
+                    Text(stringResource(R.string.cancel), color = RpgTextSecondary)
+                }
+            },
+            containerColor = RpgCardSurface
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
             .verticalScroll(scrollState)
     ) {
-        Text(
-            text = stringResource(R.string.settings_title),
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
+        // --- 1. SYSTEM HEADER ---
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    text = stringResource(R.string.settings_title).uppercase(),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Black,
+                    color = RpgCyan,
+                    letterSpacing = 1.sp
+                )
+                Text(
+                    text = "System Configuration & Guild Codex",
+                    fontSize = 12.sp,
+                    color = RpgTextSecondary
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(RpgSlotSurface)
+                    .border(1.dp, RpgGold.copy(alpha = 0.6f), RoundedCornerShape(12.dp))
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text(
+                    text = "v1.0.0",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = RpgGold
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         // Permission warnings
         if (showExactAlarmWarning) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = RpgRuby.copy(alpha = 0.2f)),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .border(1.dp, RpgRuby, RoundedCornerShape(16.dp)),
                 onClick = {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
@@ -148,9 +245,9 @@ fun SettingsScreen(
             ) {
                 Text(
                     text = stringResource(R.string.exact_alarm_perm_warning),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = RpgRuby,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(12.dp)
                 )
             }
@@ -158,8 +255,12 @@ fun SettingsScreen(
 
         if (showNotifWarning) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = RpgRuby.copy(alpha = 0.2f)),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .border(1.dp, RpgRuby, RoundedCornerShape(16.dp)),
                 onClick = {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
@@ -171,77 +272,53 @@ fun SettingsScreen(
             ) {
                 Text(
                     text = stringResource(R.string.notif_perm_warning),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = RpgRuby,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(12.dp)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Language Switcher Card
+        // --- 2. HYDRATION TARGET CARD ---
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = stringResource(R.string.settings_lang),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(
-                        onClick = { onLanguageChange("en") },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (state.appLanguage == "en") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = if (state.appLanguage == "en") MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
-                        modifier = Modifier.weight(1f).padding(end = 4.dp)
-                    ) {
-                        Text(stringResource(R.string.settings_lang_en))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("💧", fontSize = 18.sp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.water_tracker_title),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = Color.White
+                        )
                     }
-                    Button(
-                        onClick = { onLanguageChange("he") },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (state.appLanguage == "he") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = if (state.appLanguage == "he") MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
-                        modifier = Modifier.weight(1f).padding(start = 4.dp)
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(RpgSlotSurface)
+                            .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
-                        Text(stringResource(R.string.settings_lang_he))
+                        Text(
+                            text = "${String.format("%.1f", targetSliderValue)}L",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = RpgCyan
+                        )
                     }
                 }
-            }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-        // Hydration Target Slider
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = stringResource(R.string.water_tracker_title),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = stringResource(R.string.water_target_label, targetSliderValue),
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
                 Slider(
                     value = targetSliderValue,
                     onValueChange = {
@@ -250,56 +327,242 @@ fun SettingsScreen(
                     onValueChangeFinished = {
                         onHydrationTargetChange(targetSliderValue.toDouble())
                     },
-                    valueRange = 2.0f..4.0f,
-                    steps = 19 // 2.0 to 4.0 in 0.1 increments is 20 points, steps is 20 - 1 = 19
+                    valueRange = 1.0f..5.0f,
+                    steps = 39,
+                    colors = SliderDefaults.colors(
+                        thumbColor = RpgCyan,
+                        activeTrackColor = RpgCyan,
+                        inactiveTrackColor = RpgSlotSurface
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = stringResource(R.string.settings_water_desc),
+                    fontSize = 12.sp,
+                    color = RpgTextSecondary,
+                    lineHeight = 17.sp
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
-        // Alarm Configuration Card
+        // --- 3. SYSTEM LANGUAGE CARD ---
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = stringResource(R.string.settings_alarm_title),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("🌐", fontSize = 18.sp)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.settings_lang),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = Color.White
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
-                        value = morningTime,
-                        onValueChange = { morningTime = it },
-                        label = { Text("Morning") },
-                        modifier = Modifier.weight(1f).padding(end = 4.dp),
-                        singleLine = true
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    val isEnglish = state.appLanguage == "en"
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(46.dp)
+                            .clip(RoundedCornerShape(14.dp))
+                            .background(if (isEnglish) RpgGold else RpgSlotSurface)
+                            .clickable { onLanguageChange("en") },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_lang_en),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            color = if (isEnglish) Color(0xFF13121D) else Color.White
+                        )
+                    }
+
+                    val isHebrew = state.appLanguage == "he"
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(46.dp)
+                            .clip(RoundedCornerShape(14.dp))
+                            .background(if (isHebrew) RpgGold else RpgSlotSurface)
+                            .clickable { onLanguageChange("he") },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_lang_he),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            color = if (isHebrew) Color(0xFF13121D) else Color.White
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // --- 4. GAME RULES & MECHANICS GUIDE ---
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("📜", fontSize = 18.sp)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.settings_rules_title),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = Color.White
                     )
-                    OutlinedTextField(
-                        value = noonTime,
-                        onValueChange = { noonTime = it },
-                        label = { Text("Noon") },
-                        modifier = Modifier.weight(1f).padding(horizontal = 2.dp),
-                        singleLine = true
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(color = RpgBorder, thickness = 1.dp)
+                Spacer(modifier = Modifier.height(10.dp))
+
+                RuleBulletItem(text = stringResource(R.string.settings_rules_quests), color = Color.White)
+                Spacer(modifier = Modifier.height(8.dp))
+                RuleBulletItem(text = stringResource(R.string.settings_rules_missed), color = RpgRuby)
+                Spacer(modifier = Modifier.height(8.dp))
+                RuleBulletItem(text = stringResource(R.string.settings_rules_temptation), color = RpgRuby)
+                Spacer(modifier = Modifier.height(8.dp))
+                RuleBulletItem(text = stringResource(R.string.settings_rules_fainting), color = RpgTextSecondary)
+                Spacer(modifier = Modifier.height(8.dp))
+                RuleBulletItem(text = stringResource(R.string.settings_rules_merchant), color = RpgGold)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // --- 5. TACTICAL COMBAT TIPS ---
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("💡", fontSize = 18.sp)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.settings_tips_title),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = Color.White
                     )
-                    OutlinedTextField(
-                        value = eveningTime,
-                        onValueChange = { eveningTime = it },
-                        label = { Text("Evening") },
-                        modifier = Modifier.weight(1f).padding(horizontal = 2.dp),
-                        singleLine = true
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(color = RpgBorder, thickness = 1.dp)
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = stringResource(R.string.settings_tips_1),
+                    fontSize = 13.sp,
+                    color = RpgTextSecondary,
+                    lineHeight = 18.sp
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = stringResource(R.string.settings_tips_2),
+                    fontSize = 13.sp,
+                    color = RpgTextSecondary,
+                    lineHeight = 18.sp
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = stringResource(R.string.settings_tips_3),
+                    fontSize = 13.sp,
+                    color = RpgTextSecondary,
+                    lineHeight = 18.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // --- 6. REMINDER TIME SLOTS & ALARM MODE ---
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = RpgCardSurface)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("🔔", fontSize = 18.sp)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "RPG Habit Reminders",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp,
+                                color = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = stringResource(
+                                if (state.alarmModeActive) R.string.settings_alarm_mode else R.string.settings_notif_mode
+                            ),
+                            fontSize = 11.sp,
+                            color = RpgTextSecondary
+                        )
+                    }
+
+                    Switch(
+                        checked = state.alarmModeActive,
+                        onCheckedChange = { onAlarmModeToggle(it) },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = RpgGold,
+                            checkedTrackColor = RpgSlotSurface,
+                            uncheckedThumbColor = RpgTextSecondary,
+                            uncheckedTrackColor = RpgButtonDark
+                        )
                     )
-                    OutlinedTextField(
-                        value = nightTime,
-                        onValueChange = { nightTime = it },
-                        label = { Text("Night") },
-                        modifier = Modifier.weight(1f).padding(start = 4.dp),
-                        singleLine = true
-                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+                HorizontalDivider(color = RpgBorder, thickness = 1.dp)
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Text(
+                    text = stringResource(R.string.settings_alarm_title),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = RpgGold
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    TimeSlotField("Morning", morningTime, Modifier.weight(1f)) { morningTime = it }
+                    TimeSlotField("Noon", noonTime, Modifier.weight(1f)) { noonTime = it }
+                    TimeSlotField("Evening", eveningTime, Modifier.weight(1f)) { eveningTime = it }
+                    TimeSlotField("Night", nightTime, Modifier.weight(1f)) { nightTime = it }
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -317,58 +580,28 @@ fun SettingsScreen(
                             )
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(46.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = RpgGold),
                     enabled = isTimeValid
                 ) {
-                    Text(stringResource(R.string.save))
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Alarm Mode Toggle Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "Alarm / Reminder Mode",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = stringResource(
-                                if (state.alarmModeActive) R.string.settings_alarm_mode else R.string.settings_notif_mode
-                            ),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-
-                    Switch(
-                        checked = state.alarmModeActive,
-                        onCheckedChange = { onAlarmModeToggle(it) }
+                    Text(
+                        stringResource(R.string.save),
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF13121D)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-                Divider()
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 // Custom Ringtone Upload
                 Text(
                     text = stringResource(R.string.upload_ringtone),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    fontSize = 13.sp,
+                    color = Color.White
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -377,20 +610,88 @@ fun SettingsScreen(
                     } else {
                         stringResource(R.string.no_custom_ringtone)
                     },
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    fontSize = 11.sp,
+                    color = RpgTextSecondary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        ringtoneLauncher.launch("audio/mpeg") // Launch picker for MP3 files
+                        ringtoneLauncher.launch("audio/mpeg")
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(42.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = RpgButtonDark)
                 ) {
-                    Text("Select MP3 Ringtone File")
+                    Text("Select MP3 Ringtone File", fontSize = 13.sp, color = Color.White)
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // --- 7. RESET PROGRESS BUTTON ---
+        Button(
+            onClick = { showResetDialog = true },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = RpgRuby)
+        ) {
+            Text(
+                text = "⚠️ " + stringResource(R.string.settings_reset_progress),
+                fontWeight = FontWeight.Bold,
+                fontSize = 15.sp,
+                color = Color.White
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+@Composable
+fun RuleBulletItem(text: String, color: Color) {
+    Text(
+        text = "• $text",
+        fontSize = 13.sp,
+        color = color,
+        lineHeight = 18.sp
+    )
+}
+
+@Composable
+fun TimeSlotField(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = label,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = RpgTextSecondary,
+            modifier = Modifier.padding(start = 2.dp, bottom = 2.dp)
+        )
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            shape = RoundedCornerShape(10.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = RpgSlotSurface,
+                unfocusedContainerColor = RpgSlotSurface,
+                focusedBorderColor = RpgGold,
+                unfocusedBorderColor = RpgBorder,
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -405,13 +706,12 @@ private fun isValidTime(timeStr: String): Boolean {
 
 private fun copyCustomRingtone(context: Context, uri: Uri): Boolean {
     return try {
-        // Cap size at 5MB
         val pfd = context.contentResolver.openFileDescriptor(uri, "r")
         val sizeBytes = pfd?.statSize ?: 0
         pfd?.close()
-        
+
         if (sizeBytes > 5 * 1024 * 1024) {
-            return false // Too large
+            return false // Max 5MB
         }
 
         val inputStream = context.contentResolver.openInputStream(uri) ?: return false

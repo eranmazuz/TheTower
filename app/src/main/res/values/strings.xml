@@ -75,4 +75,20 @@
     <string name="invalid_file_msg">Invalid MP3 file. Size must be under 5MB.</string>
     <string name="exact_alarm_perm_warning">Exact alarm permission is required to schedule precise slot notifications. Click here to enable it.</string>
     <string name="notif_perm_warning">Notification permission is required to remind you of slot transitions. Click here to enable it.</string>
+
+    <string name="settings_water_desc">Hydration persists throughout the day. Reaching your goal unleashes critical water strikes in combat, while falling short by day end inflicts dehydration damage.</string>
+    <string name="settings_rules_title">Game Rules &amp; Mechanics</string>
+    <string name="settings_rules_quests">⚔️ Quests (Good Habits): Completing scheduled habits deals damage to the daily monster and awards Gold &amp; XP.</string>
+    <string name="settings_rules_missed">⚡ Slot Penalties: Incomplete tasks when a slot ends cause the monster to retaliate and deal damage. DEF reduces this damage.</string>
+    <string name="settings_rules_temptation">😈 Temptations (Bad Habits): Giving in to bad habits triggers immediate monster counter-attacks against your HP.</string>
+    <string name="settings_rules_fainting">💀 Fainting (0 HP): If your HP drops to 0, you faint and wake up at the inn, losing 10% gold and 20% XP.</string>
+    <string name="settings_rules_merchant">🪙 Guild Merchant: Use earned gold in town to purchase health potions, weapons (+ATK), and shields (+DEF).</string>
+    <string name="settings_tips_title">Tactical Tips</string>
+    <string name="settings_tips_1">1. Leveling up fully heals your HP and permanently increases base attributes.</string>
+    <string name="settings_tips_2">2. Keep health potions available to survive missed slot penalties.</string>
+    <string name="settings_tips_3">3. Equip weapons and shields from the merchant to maximize combat power.</string>
+    <string name="settings_reset_progress">Reset Guild Progress</string>
+    <string name="settings_reset_confirm_title">Reset All Progress?</string>
+    <string name="settings_reset_confirm_desc">This will reset your hero, floor progress, inventory, and quest definitions back to the beginning. This action cannot be undone.</string>
+    <string name="settings_reset_confirm_button">Yes, Reset Everything</string>
 </resources>

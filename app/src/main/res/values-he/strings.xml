@@ -75,4 +75,20 @@
     <string name="invalid_file_msg">קובץ MP3 לא תקין. הגודל חייב להיות מתחת ל-5MB.</string>
     <string name="exact_alarm_perm_warning">נדרשת הרשאת שעון מעורר מדויק לתזמון התראות. לחץ כאן כדי לאשר.</string>
     <string name="notif_perm_warning">נדרשת הרשאת התראות כדי להזכיר לך מעברי חלונות זמן. לחץ כאן כדי לאשר.</string>
+
+    <string name="settings_water_desc">יעד שתייה זה מתרחש כל יום, לאורך כל היום. אם תושלם, היא תפעיל מתקפת מים קריטית. אם לא תושלם עד סוף היום, תספוג נזק מהתייבשות.</string>
+    <string name="settings_rules_title">חוקי המשחק ומדריכים</string>
+    <string name="settings_rules_quests">⚔️ משימות (הרגלים טובים): השלמת משימות מתוזמנות גורמת נזק לאויב היומי ומעניקה לך זהב ונקודות ניסיון (XP).</string>
+    <string name="settings_rules_missed">⚡ עונש אי-ביצוע: כל משימה שנותרה לא מסומנת כאשר חלון הזמן מסתיים גורמת לאויב לתקוף אותך. סטטיסטיקת ההגנה שלך מפחיתה נזק זה.</string>
+    <string name="settings_rules_temptation">😈 פיתויים (הרגלים רעים): ביצוע הרגלים רעים גורם לאויב להגיב מיד ולפגוע בחיים שלך (HP).</string>
+    <string name="settings_rules_fainting">💀 התעלפות: אם נקודות החיים (HP) שלך יורדות ל-0, אתה מתעלף ומתעורר בפונדק, ומאבד 10% זהב ו-20% נקודות ניסיון.</string>
+    <string name="settings_rules_merchant">🪙 סוחר הגילדה: השתמש בזהב בחנות (לשונית עיירה) כדי לקנות שיקויי ריפוי, כלי נשק (מגדיל התקפה) ומגנים (מגדיל הגנה).</string>
+    <string name="settings_tips_title">טיפים טקטיים</string>
+    <string name="settings_tips_1">1. עליית רמה מרפאת לחלוטין את החיים שלך ומגדילה את הנתונים הבסיסיים שלך.</string>
+    <string name="settings_tips_2">2. שמור שיקויי חיים זמינים כדי למנוע התעלפות מנזק יומי.</string>
+    <string name="settings_tips_3">3. צייד כלי נשק ומגנים כדי להכפיל את יעילות הקרב שלך.</string>
+    <string name="settings_reset_progress">איפוס התקדמות הגילדה</string>
+    <string name="settings_reset_confirm_title">האם לאפס את כל ההתקדמות?</string>
+    <string name="settings_reset_confirm_desc">פעולה זו תאפס את הגיבור, קומת המגדל, הציוד והמשימות בחזרה להתחלה. לא ניתן לבטל פעולה זו.</string>
+    <string name="settings_reset_confirm_button">כן, אפס הכל</string>
 </resources>
