@@ -21,7 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -102,16 +102,16 @@ fun HeroScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.weight(1f),
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                            thickness = 2.dp
+                            thickness = 1.dp
                         )
                         Text(" ◆ ", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.weight(1f),
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                            thickness = 2.dp
+                            thickness = 1.dp
                         )
                     }
 
@@ -198,16 +198,16 @@ fun HeroScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.weight(1f),
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                            thickness = 2.dp
+                            thickness = 1.dp
                         )
                         Text(" ◆ ", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-                        Divider(
+                        HorizontalDivider(
                             modifier = Modifier.weight(1f),
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                            thickness = 2.dp
+                            thickness = 1.dp
                         )
                     }
 
@@ -258,8 +258,8 @@ fun HeroScreen(
 
                     LinearProgressIndicator(
                         progress = { waterRatio },
-                        color = Color(0xFF29B6F6),
-                        trackColor = Color(0xFFE1F5FE),
+                        color = Color(0xFF38BDF8),
+                        trackColor = Color(0xFF1E2842),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(12.dp)
@@ -281,13 +281,13 @@ fun HeroScreen(
                     ) {
                         Button(
                             onClick = { onAddWater(0.25) },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF039BE5))
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0284C7))
                         ) {
                             Text(stringResource(R.string.add_250_ml))
                         }
                         Button(
                             onClick = { onAddWater(0.5) },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0288D1))
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0369A1))
                         ) {
                             Text(stringResource(R.string.add_500_ml))
                         }
@@ -309,7 +309,7 @@ fun HeroScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            Divider()
+            HorizontalDivider(color = MaterialTheme.colorScheme.outline)
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Player Inventory & Equipment",

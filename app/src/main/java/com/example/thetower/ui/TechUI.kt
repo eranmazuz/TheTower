@@ -7,19 +7,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.thetower.theme.SystemBorder
+import com.example.thetower.theme.SystemSurface
+import com.example.thetower.theme.SystemSurfaceElevated
 
 fun Modifier.techBorder(
-    color: Color = Color(0xFF3B82F6),
-    fillColor: Color = Color(0xFF1E293B)
+    borderColor: Color = SystemBorder,
+    fillColor: Color = SystemSurface
 ) = this
     .clip(RoundedCornerShape(20.dp))
     .background(fillColor)
-    .border(1.5.dp, color.copy(alpha = 0.7f), RoundedCornerShape(20.dp))
+    .border(1.dp, borderColor, RoundedCornerShape(20.dp))
 
 fun Modifier.techCircle(
-    color: Color = Color(0xFF3B82F6),
-    fillColor: Color = Color(0xFF0F172A)
+    borderColor: Color = SystemBorder,
+    fillColor: Color = SystemSurfaceElevated
 ) = this
     .clip(RoundedCornerShape(50))
     .background(fillColor)
-    .border(1.5.dp, color.copy(alpha = 0.7f), RoundedCornerShape(50))
+    .border(1.dp, borderColor, RoundedCornerShape(50))
