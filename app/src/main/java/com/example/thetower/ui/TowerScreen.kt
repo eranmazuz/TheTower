@@ -206,16 +206,20 @@ fun TowerScreen(
                                 .background(RpgSlotSurface),
                             contentAlignment = Alignment.Center
                         ) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Box(modifier = Modifier.fillMaxSize()) {
                                 Text(
                                     text = if (state.player.job == "Mage") "🪄" else "⚔️",
-                                    fontSize = 36.sp,
-                                    modifier = Modifier.offset(y = (-7).dp)
+                                    fontSize = 20.sp,
+                                    modifier = Modifier
+                                        .align(Alignment.TopCenter)
+                                        .padding(top = 6.dp)
                                 )
                                 Text(
                                     text = "🧑",
-                                    fontSize = 30.sp,
-                                    modifier = Modifier.offset(y = 10.dp)
+                                    fontSize = 34.sp,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 6.dp)
                                 )
                             }
                         }
