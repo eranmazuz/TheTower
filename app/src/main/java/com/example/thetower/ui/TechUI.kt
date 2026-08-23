@@ -14,7 +14,7 @@ fun Modifier.techBorder(
 ) = this
     .clip(RoundedCornerShape(20.dp))
     .background(fillColor)
-    .border(1.5.dp, color.copy(alpha = 0.4f), RoundedCornerShape(20.dp))
+    .border(1.5.dp, color.copy(alpha = 0.7f), RoundedCornerShape(20.dp))
 
 fun Modifier.techCircle(
     color: Color = Color(0xFF3B82F6),
@@ -22,4 +22,4 @@ fun Modifier.techCircle(
 ) = this
     .clip(RoundedCornerShape(50))
     .background(fillColor)
-    .border(1.5.dp, color.copy(alpha = 0.4f), RoundedCornerShape(50))
+    .border(1.5.dp, color.copy(alpha = 0.7f), RoundedCornerShape(50))

@@ -86,7 +86,7 @@ fun MainScreen(
                     NavigationBarItem(
                         selected = selectedTab == 0,
                         onClick = { selectedTab = 0 },
-                        icon = { Text("🏰", fontSize = 20.sp) },
+                        icon = { Text("🛕", fontSize = 20.sp) },
                         label = { Text(stringResource(R.string.tab_tower)) }
                     )
                     NavigationBarItem(
