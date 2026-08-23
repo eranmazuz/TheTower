@@ -50,7 +50,7 @@ class MainScreenViewModel(private val repository: DataRepository) : ViewModel() 
                     baseAttack = baseAtk,
                     baseDefense = baseDef
                 ),
-                battleLog = state.battleLog + "Welcome, $name the $job! Your journey in The Tower begins."
+                battleLog = listOf("Welcome, $name the $job! Your journey in The Tower begins.") + state.battleLog.filterNot { it.contains("Welcome") }
             )
         }
     }
