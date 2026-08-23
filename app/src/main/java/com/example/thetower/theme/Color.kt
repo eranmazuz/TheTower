@@ -2,11 +2,11 @@ package com.example.thetower.theme
 
 import androidx.compose.ui.graphics.Color
 
-val RetroBlack = Color(0xFF0A0A0C)
-val RetroDarkGrey = Color(0xFF16161A)
-val RetroCardGrey = Color(0xFF22222A)
-val RetroAmber = Color(0xFFFFB300)
-val RetroGreen = Color(0xFF00E676)
-val RetroRed = Color(0xFFFF1744)
-val RetroLightGrey = Color(0xFFECEFF1)
-val RetroMutedGrey = Color(0xFF90A4AE)
+val RetroBlack = Color(0xFF030812) // Deep space void background
+val RetroDarkGrey = Color(0xFF08101E) // HUD container background
+val RetroCardGrey = Color(0x1A00E5FF) // Holographic glass (translucent cyan)
+val RetroAmber = Color(0xFF00E5FF) // Electric neon cyan (Primary text & alerts)
+val RetroGreen = Color(0xFF2979FF) // Electric system blue (Secondary)
+val RetroRed = Color(0xFFFF2D55) // System error / warning red
+val RetroLightGrey = Color(0xFFE0F7FA) // High-contrast cyan-white text
+val RetroMutedGrey = Color(0x99E0F7FA) // Holographic subtext
