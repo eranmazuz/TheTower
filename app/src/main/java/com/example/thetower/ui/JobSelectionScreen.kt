@@ -72,7 +72,7 @@ fun JobSelectionScreen(
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text(stringResource(R.string.quest_title_label)) }, // reuse "Quest Title" as name label or let it be blank
+                label = { Text(stringResource(R.string.hero_name_label)) },
                 placeholder = { Text("Enter Hero Name") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)

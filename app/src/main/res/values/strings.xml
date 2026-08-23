@@ -24,6 +24,7 @@
     <string name="atk_label">ATK: %1$d</string>
     <string name="def_label">DEF: %1$d</string>
     <string name="job_label">Job: %1$s</string>
+    <string name="hero_name_label">Hero Name</string>
 
     <string name="choose_job_title">Choose Your Job</string>
     <string name="choose_job_desc">Your job determines your starting attributes and combat profile.</string>

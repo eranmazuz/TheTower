@@ -24,6 +24,7 @@
     <string name="atk_label">התקפה: %1$d</string>
     <string name="def_label">הגנה: %1$d</string>
     <string name="job_label">מקצוע: %1$s</string>
+    <string name="hero_name_label">שם הגיבור</string>
 
     <string name="choose_job_title">בחר את המקצוע שלך</string>
     <string name="choose_job_desc">המקצוע שלך קובע את תכונות הבסיס ופרופיל הקרב שלך.</string>
