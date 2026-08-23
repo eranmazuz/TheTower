@@ -71,6 +71,15 @@ fun TowerScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Tower Screen Title Header
+        Text(
+            text = stringResource(R.string.tab_tower),
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.align(Alignment.Start).padding(bottom = 12.dp)
+        )
+
         // Top Header: Level & XP on Left, Gold on Right
         Row(
             modifier = Modifier
@@ -90,8 +99,8 @@ fun TowerScreen(
                 val xpRatio = if (state.player.xpToNextLevel() > 0) state.player.xp.toFloat() / state.player.xpToNextLevel() else 0f
                 LinearProgressIndicator(
                     progress = { xpRatio },
-                    color = Color(0xFF66BB6A), // Green XP
-                    trackColor = Color(0x3366BB6A),
+                    color = Color(0xFFFFCA28), // Yellow XP!
+                    trackColor = Color(0x33FFCA28),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
@@ -177,8 +186,8 @@ fun TowerScreen(
                             val enemyHpRatio = if (monster.maxHp > 0) monster.currentHp.toFloat() / monster.maxHp else 0f
                             LinearProgressIndicator(
                                 progress = { enemyHpRatio },
-                                color = Color(0xFF94A3B8), // Muted slate red/grey HP bar
-                                trackColor = Color(0x33FFFFFF),
+                                color = Color(0xFFF43F5E), // Red HP bar
+                                trackColor = Color(0x33F43F5E),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(8.dp)
