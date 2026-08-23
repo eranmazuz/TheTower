@@ -368,7 +368,7 @@ fun TowerScreen(
         val listState = rememberLazyListState()
         LaunchedEffect(state.battleLog.size) {
             if (state.battleLog.isNotEmpty()) {
-                listState.animateScrollToItem(state.battleLog.size - 1)
+                listState.animateScrollToItem(0)
             }
         }
 
@@ -408,12 +408,19 @@ fun TowerScreen(
                     state = listState,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(state.battleLog) { log ->
-                        val isDamage = log.contains("damage", ignoreCase = true) ||
+                    items(state.battleLog.asReversed()) { log ->
+                        val isWaterOrPotion = log.contains("water", ignoreCase = true) ||
+                                log.contains("Consumed", ignoreCase = true) ||
+                                log.contains("potion", ignoreCase = true) ||
+                                log.contains("Healed", ignoreCase = true)
+
+                        val isDamage = !isWaterOrPotion && (
+                                log.contains("damage", ignoreCase = true) ||
                                 log.contains("failed", ignoreCase = true) ||
                                 log.contains("retaliat", ignoreCase = true) ||
                                 log.contains("Took", ignoreCase = true) ||
-                                log.contains("❌") || log.contains("💧") || log.contains("💀")
+                                log.contains("❌") || log.contains("💀")
+                        )
 
                         val isAttack = log.contains("attack", ignoreCase = true) ||
                                 log.contains("Dealt", ignoreCase = true) ||
@@ -424,6 +431,7 @@ fun TowerScreen(
                                 log.contains("XP") || log.contains("Gold")
 
                         val itemColor = when {
+                            isWaterOrPotion -> RpgCyan // Cyan for water and healing
                             isDamage -> RpgRuby // Red for taking damage / failure
                             isAttack -> RpgGold // Yellow for attacking / rewards
                             else -> RpgTextPrimary
