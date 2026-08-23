@@ -1,18 +1,19 @@
 package com.example.thetower.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -31,12 +32,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.thetower.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JobSelectionScreen(
     onJobSelected: (String, String) -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var selectedJob by remember { mutableStateOf("Warrior") }
+    var expanded by remember { mutableStateOf(false) }
+
+    val jobs = listOf("Warrior", "Mage")
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -80,74 +85,75 @@ fun JobSelectionScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+            // Class Dropdown Menu
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = it }
             ) {
-                // Warrior Card
-                Card(
+                OutlinedTextField(
+                    value = if (selectedJob == "Warrior") stringResource(R.string.job_warrior) else stringResource(R.string.job_mage),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Choose Class") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = if (selectedJob == "Warrior") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (selectedJob == "Warrior") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
-                    ),
-                    onClick = { selectedJob = "Warrior" }
+                        .menuAnchor()
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text("🛡️", fontSize = 48.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = stringResource(R.string.job_warrior),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                    jobs.forEach { job ->
+                        DropdownMenuItem(
+                            text = { Text(if (job == "Warrior") stringResource(R.string.job_warrior) else stringResource(R.string.job_mage)) },
+                            onClick = {
+                                selectedJob = job
+                                expanded = false
+                            }
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("HP: 60\nATK: 12\nDEF: 6", fontSize = 14.sp, textAlign = TextAlign.Center)
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                // Mage Card
-                Card(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = if (selectedJob == "Mage") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (selectedJob == "Mage") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
-                    ),
-                    onClick = { selectedJob = "Mage" }
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text("⚡", fontSize = 48.sp)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = stringResource(R.string.job_mage),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text("HP: 40\nATK: 18\nDEF: 3", fontSize = 14.sp, textAlign = TextAlign.Center)
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Dynamic Class Display Panel
+            val avatar = if (selectedJob == "Warrior") "🛡️" else "⚡"
+            val title = if (selectedJob == "Warrior") stringResource(R.string.job_warrior) else stringResource(R.string.job_mage)
+            val statsText = if (selectedJob == "Warrior") {
+                "HP: 60  |  ATK: 12  |  DEF: 6"
+            } else {
+                "HP: 40  |  ATK: 18  |  DEF: 3"
+            }
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(avatar, fontSize = 64.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = statsText,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = { onJobSelected(name, selectedJob) },
