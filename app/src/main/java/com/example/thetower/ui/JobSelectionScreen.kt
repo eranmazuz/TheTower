@@ -123,7 +123,7 @@ fun JobSelectionScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Dynamic Class Display Panel
-            val avatar = if (selectedJob == "Warrior") "🛡️" else "⚡"
+            val avatar = if (selectedJob == "Warrior") "🛡️" else "🪄"
             val title = if (selectedJob == "Warrior") stringResource(R.string.job_warrior) else stringResource(R.string.job_mage)
             val statsText = if (selectedJob == "Warrior") {
                 "HP: 60  |  ATK: 12  |  DEF: 6"

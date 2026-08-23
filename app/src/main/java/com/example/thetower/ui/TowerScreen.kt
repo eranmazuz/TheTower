@@ -208,7 +208,7 @@ fun TowerScreen(
                         ) {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 Text(
-                                    text = if (state.player.job == "Mage") "🧙" else "⚔️",
+                                    text = if (state.player.job == "Mage") "🪄" else "⚔️",
                                     fontSize = 36.sp,
                                     modifier = Modifier.offset(y = (-7).dp)
                                 )
