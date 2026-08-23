@@ -120,26 +120,24 @@ fun TowerScreen(
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            // Monster HP Bar (Red)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            // Monster HP Bar (Thick Red, pill-shaped)
                             val enemyHpRatio = if (monster.maxHp > 0) monster.currentHp.toFloat() / monster.maxHp else 0f
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                LinearProgressIndicator(
-                                    progress = { enemyHpRatio },
-                                    color = Color(0xFFEF4444),
-                                    trackColor = Color(0x33EF4444),
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .height(8.dp)
-                                        .clip(RoundedCornerShape(4.dp))
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "${monster.currentHp}/${monster.maxHp} HP",
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                            LinearProgressIndicator(
+                                progress = { enemyHpRatio },
+                                color = Color(0xFFEF4444),
+                                trackColor = Color(0x33EF4444),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(16.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${monster.currentHp}/${monster.maxHp} HP",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         // Enemy Avatar on the Right (Rounded borderless container)
@@ -211,26 +209,24 @@ fun TowerScreen(
                                 fontSize = 12.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            // Player HP Bar (Red)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            // Player HP Bar (Thick Red, pill-shaped)
                             val playerHpRatio = if (state.player.maxHp > 0) state.player.currentHp.toFloat() / state.player.maxHp else 0f
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                LinearProgressIndicator(
-                                    progress = { playerHpRatio },
-                                    color = Color(0xFFEF4444),
-                                    trackColor = Color(0x33EF4444),
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .height(8.dp)
-                                        .clip(RoundedCornerShape(4.dp))
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "${state.player.currentHp}/${state.player.maxHp} HP",
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                            LinearProgressIndicator(
+                                progress = { playerHpRatio },
+                                color = Color(0xFFEF4444),
+                                trackColor = Color(0x33EF4444),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(16.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${state.player.currentHp}/${state.player.maxHp} HP",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
                 }
