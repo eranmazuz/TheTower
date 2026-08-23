@@ -34,8 +34,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.thetower.R
+import com.example.thetower.ui.techBorder
+import com.example.thetower.ui.techCircle
 import com.example.thetower.data.config.GameConfig
 import com.example.thetower.data.model.GameState
+import androidx.compose.material3.Divider
 
 @Composable
 fun TowerScreen(
@@ -74,79 +77,140 @@ fun TowerScreen(
 
         // Active Monster Card or Boss Invitation
         if (monster != null) {
-            Card(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.3f),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                    .weight(1.3f)
+                    .techBorder()
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(monster.avatarEmoji, fontSize = 64.sp)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = monster.name + if (monster.isBoss) " (BOSS)" else "",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = if (monster.isBoss) Color(0xFFD32F2F) else MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Level ${monster.level}",
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Monster HP Bar
-                    val hpRatio = if (monster.maxHp > 0) monster.currentHp.toFloat() / monster.maxHp else 0f
+                    // --- TOP HALF: ENEMY INFO ---
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("HP", fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        LinearProgressIndicator(
-                            progress = { hpRatio },
-                            color = Color(0xFFE57373),
-                            trackColor = Color(0xFFFFCDD2),
+                        // Enemy Avatar
+                        Box(
                             modifier = Modifier
-                                .weight(1f)
-                                .height(12.dp)
-                                .clip(RoundedCornerShape(6.dp))
+                                .size(72.dp)
+                                .techCircle(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(monster.avatarEmoji, fontSize = 36.sp)
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = monster.name + if (monster.isBoss) " (BOSS)" else "",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (monster.isBoss) Color(0xFFF43F5E) else MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "Level ${monster.level}",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            // Monster HP Bar
+                            val enemyHpRatio = if (monster.maxHp > 0) monster.currentHp.toFloat() / monster.maxHp else 0f
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                LinearProgressIndicator(
+                                    progress = { enemyHpRatio },
+                                    color = Color(0xFFF43F5E), // Enemy Red
+                                    trackColor = Color(0x33F43F5E),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(8.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "${monster.currentHp}/${monster.maxHp}",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
+
+                    // --- DIVISION LINE ---
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Divider(
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                            thickness = 1.dp
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "${monster.currentHp}/${monster.maxHp}",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
+                        Text(" VS ", color = MaterialTheme.colorScheme.primary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Divider(
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                            thickness = 1.dp
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        text = "ATK: ${monster.attack}  |  DEF: ${monster.defense}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = monster.raceDescription,
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 16.sp,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
+                    // --- BOTTOM HALF: PLAYER INFO ---
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Player Avatar (Class Emoji + Human below it)
+                        Box(
+                            modifier = Modifier
+                                .size(72.dp)
+                                .techCircle(color = MaterialTheme.colorScheme.secondary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(if (state.player.job == "Mage") "🧙" else "⚔️", fontSize = 24.sp)
+                                Text("🧑", fontSize = 14.sp)
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = state.player.name,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = state.player.job,
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            // Player HP Bar
+                            val playerHpRatio = if (state.player.maxHp > 0) state.player.currentHp.toFloat() / state.player.maxHp else 0f
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                LinearProgressIndicator(
+                                    progress = { playerHpRatio },
+                                    color = Color(0xFF00E5FF), // Player Cyan
+                                    trackColor = Color(0x3300E5FF),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(8.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "${state.player.currentHp}/${state.player.maxHp}",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
                 }
             }
         } else if (state.floorBossAvailable) {
