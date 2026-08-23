@@ -404,11 +404,16 @@ fun TowerScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                val welcomeMessage = state.battleLog.firstOrNull { it.contains("Welcome", ignoreCase = true) }
+                    ?: "Welcome, ${state.player.name} the ${state.player.job}! Your journey in The Tower begins."
+                val dynamicLogs = state.battleLog.filterNot { it.contains("Welcome", ignoreCase = true) }.asReversed()
+                val displayLogs = listOf(welcomeMessage) + dynamicLogs
+
                 LazyColumn(
                     state = listState,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(state.battleLog.asReversed()) { log ->
+                    items(displayLogs) { log ->
                         val isWaterOrPotion = log.contains("water", ignoreCase = true) ||
                                 log.contains("Consumed", ignoreCase = true) ||
                                 log.contains("potion", ignoreCase = true) ||
