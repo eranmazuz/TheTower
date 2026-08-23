@@ -141,11 +141,12 @@ fun TowerScreen(
                             }
                         }
                         Spacer(modifier = Modifier.width(16.dp))
-                        // Enemy Avatar on the Right
+                        // Enemy Avatar on the Right (Rounded borderless container)
                         Box(
                             modifier = Modifier
                                 .size(72.dp)
-                                .techCircle(),
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(MaterialTheme.colorScheme.background),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(monster.avatarEmoji, fontSize = 36.sp)
@@ -175,16 +176,29 @@ fun TowerScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Player Avatar (Class Emoji + Human below it) on the Left
+                        // Player Avatar (Class Emoji + Human overlapping) on the Left (Rounded borderless container)
                         Box(
                             modifier = Modifier
                                 .size(72.dp)
-                                .techCircle(color = MaterialTheme.colorScheme.secondary),
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(MaterialTheme.colorScheme.background),
                             contentAlignment = Alignment.Center
                         ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(if (state.player.job == "Mage") "🧙" else "⚔️", fontSize = 24.sp)
-                                Text("🧑", fontSize = 14.sp)
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                Text(
+                                    text = if (state.player.job == "Mage") "🧙" else "⚔️",
+                                    fontSize = 28.sp,
+                                    modifier = Modifier
+                                        .align(Alignment.TopCenter)
+                                        .padding(top = 4.dp)
+                                )
+                                Text(
+                                    text = "🧑",
+                                    fontSize = 28.sp,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 4.dp)
+                                )
                             }
                         }
                         Spacer(modifier = Modifier.width(16.dp))
