@@ -53,7 +53,7 @@
     <string name="empty_quests_msg">לא הוגדרו משימות. הוסף הרגלים ברישום המשימות שבעיירה!</string>
 
     <string name="floor_boss_button">להילחם בבוס הקומה!</string>
-    <string name="use_health_potion">השתמש בשיקוי בריאות (%1$d נשארו)</string>
+    <string name="use_health_potion">השתמש בשיקוי בריאות (%1$d)</string>
     <string name="escape_town_button">חזור לעיירה</string>
 
     <string name="codex_title">קודקס מפלצות</string>
