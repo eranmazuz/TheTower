@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -184,20 +185,16 @@ fun TowerScreen(
                                 .background(MaterialTheme.colorScheme.background),
                             contentAlignment = Alignment.Center
                         ) {
-                            Box(modifier = Modifier.fillMaxSize()) {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 Text(
                                     text = if (state.player.job == "Mage") "🧙" else "⚔️",
-                                    fontSize = 28.sp,
-                                    modifier = Modifier
-                                        .align(Alignment.TopCenter)
-                                        .padding(top = 4.dp)
+                                    fontSize = 38.sp,
+                                    modifier = Modifier.offset(y = (-8).dp)
                                 )
                                 Text(
                                     text = "🧑",
-                                    fontSize = 28.sp,
-                                    modifier = Modifier
-                                        .align(Alignment.BottomCenter)
-                                        .padding(bottom = 4.dp)
+                                    fontSize = 32.sp,
+                                    modifier = Modifier.offset(y = 12.dp)
                                 )
                             }
                         }
