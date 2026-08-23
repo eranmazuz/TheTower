@@ -160,11 +160,16 @@ class SlotAlarmReceiver : BroadcastReceiver() {
             alarmManager.cancel(pendingIntent)
 
             // Set new alarm
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val alarmClockInfo = AlarmManager.AlarmClockInfo(triggerMs, pendingIntent)
-                alarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
-            } else {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerMs, pendingIntent)
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val alarmClockInfo = AlarmManager.AlarmClockInfo(triggerMs, pendingIntent)
+                    alarmManager.setAlarmClock(alarmClockInfo, pendingIntent)
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerMs, pendingIntent)
+                }
+            } catch (e: SecurityException) {
+                // Fallback to inexact alarm if exact alarms permission is not granted/restricted
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerMs, pendingIntent)
             }
         }
     }
